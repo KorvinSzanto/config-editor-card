@@ -65,7 +65,7 @@ class ConfigEditorMonaco extends LitElement {
     createEditor(e) {
         setTimeout(() => {
             this.editor = monaco.editor.create(document.getElementById('container'), {
-                value: '',
+                value: this.code ? this.code : '',
                 language: 'yaml',
                 theme: 'vs-dark',
             });
@@ -79,7 +79,9 @@ class ConfigEditorMonaco extends LitElement {
 
     Unsave() {
         this.code = localStorage.getItem('config_editorUnsaved');
-        this.renderRoot.querySelector('#code').value = this.code;
+        if (this.editor) {
+            this.editor.setValue(this.code);
+        }
         localStorage.removeItem('config_editorUnsaved');
         this.alertLine = '';
     }
@@ -109,7 +111,11 @@ class ConfigEditorMonaco extends LitElement {
         }
     }
     async Load(x) {
-        this.code = ''; this.renderRoot.querySelector('#code').value = ''; this.infoLine = '';
+        this.code = ''; 
+        if (this.editor) {
+            this.editor.setValue(this.code);
+        }
+        this.infoLine = '';
         this.openedFile = x.target.value
         if (this.openedFile) {
             this.infoLine = 'Loading: ' + this.openedFile;
@@ -123,9 +129,10 @@ class ConfigEditorMonaco extends LitElement {
             } else {
                 localStorage.removeItem('config_editorText'); this.alertLine = '';
             }
-            this.renderRoot.querySelector('#code').value = e.data;
             this.code = e.data;
-            this.editor.setValue(this.code)
+            if (this.editor) {
+                this.editor.setValue(this.code);
+            }
         }
         localStorage.setItem('config_editorOpen', this.openedFile);
     }
