@@ -65,7 +65,7 @@ class ConfigEditorMonaco extends LitElement {
     createEditor(e) {
         setTimeout(() => {
             this.editor = monaco.editor.create(document.getElementById('container'), {
-                value: this.code,
+                value: '',
                 language: 'yaml',
                 theme: 'vs-dark',
             });
