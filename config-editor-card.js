@@ -2,7 +2,7 @@ console.info("Config Editor 1.0 - monaco");
 const LitElement = window.LitElement || Object.getPrototypeOf(customElements.get("hui-masonry-view"));
 const html = LitElement.prototype.html;
 
-class ConfigEditor extends LitElement {
+class ConfigEditorMonaco extends LitElement {
 
     static get properties() {
         return {
