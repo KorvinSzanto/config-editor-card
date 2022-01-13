@@ -61,7 +61,19 @@ class ConfigEditorMonaco extends LitElement {
     `;
     }
 
-    createEditor() {
+    async createEditor(promise) {
+        if (!require) {
+            // Wait for require to be ready
+            const scr = document.createElement('script')
+            scr.src='https://unpkg.com/monaco-editor@0.31.0/min/vs/loader.js'
+            document.head.append(scr)
+            
+            while (!require) {
+                // Wait 100ms and check again
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+        }
+
         require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.31.0/min/vs' }});
         window.MonacoEnvironment = {
             getWorkerUrl: function(workerId, label) {
@@ -181,8 +193,8 @@ class ConfigEditorMonaco extends LitElement {
         if (changedProps.has('code') || changedProps.has('openedFile') || changedProps.has('fileList') || changedProps.has('alertLine') || changedProps.has('infoLine')) { return true; }
     }
 
-    firstUpdated() {
-        this.createEditor()
+    async firstUpdated() {
+        await this.createEditor()
     }
 
 }
