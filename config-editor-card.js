@@ -19,7 +19,7 @@ class ConfigEditorMonaco extends LitElement {
     constructor() {
         super();
         this.code = '';
-        this.editor = {};
+        this.editor = null;
         this.fileList = [];
         this.openedFile = '';
         this.infoLine = '';
@@ -62,14 +62,12 @@ class ConfigEditorMonaco extends LitElement {
     `;
     }
 
-    createEditor(e) {
-        setTimeout(() => {
-            this.editor = monaco.editor.create(document.getElementById('container'), {
-                value: this.code ? this.code : '',
-                language: 'yaml',
-                theme: 'vs-dark',
-            });
-        }, 0);
+    createEditor() {
+        this.editor = monaco.editor.create(this.renderRoot.getElementById('code-container'), {
+            value: this.code ? this.code : '',
+            language: 'yaml',
+            theme: 'vs-dark',
+        });
     }
 
     updateText(e) {
@@ -137,7 +135,7 @@ class ConfigEditorMonaco extends LitElement {
         localStorage.setItem('config_editorOpen', this.openedFile);
     }
     async Save() {
-        if (this.renderRoot.querySelector('#code').value != this.code) {
+        if (this.editor.value != this.code) {
             this.infoLine = 'Something not right!';
             return;
         }
@@ -168,6 +166,10 @@ class ConfigEditorMonaco extends LitElement {
 
     shouldUpdate(changedProps) {
         if (changedProps.has('code') || changedProps.has('openedFile') || changedProps.has('fileList') || changedProps.has('alertLine') || changedProps.has('infoLine')) { return true; }
+    }
+
+    firstUpdated() {
+        this.createEditor()
     }
 
 }
