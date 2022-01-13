@@ -82,9 +82,10 @@ class ConfigEditorMonaco extends LitElement {
             }
         };
 
+        const me = this
         require(["vs/editor/editor.main"], function () {
-            this.editor = monaco.editor.create(this.renderRoot.getElementById('code-container'), {
-                value: this.code ? this.code : '',
+            me.editor = monaco.editor.create(me.renderRoot.getElementById('code-container'), {
+                value: me.code ? me.code : '',
                 language: 'yaml',
                 theme: 'vs-dark',
             });
