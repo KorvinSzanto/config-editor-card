@@ -62,13 +62,13 @@ class ConfigEditorMonaco extends LitElement {
     }
 
     async createEditor(promise) {
-        if (!require) {
+        if (typeof require === 'undefined') {
             // Wait for require to be ready
             const scr = document.createElement('script')
             scr.src='https://unpkg.com/monaco-editor@0.31.0/min/vs/loader.js'
             document.head.append(scr)
             
-            while (!require) {
+            while (typeof require === 'undefined') {
                 // Wait 100ms and check again
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
