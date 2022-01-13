@@ -38,10 +38,9 @@ class ConfigEditorMonaco extends LitElement {
 
         return html`
         <ha-card>
-            <script>var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs' } }</script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/loader.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/editor/editor.main.nls.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/editor/editor.main.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/editor/editor.mai.js"></script>
 
             <div style="min-height: calc(100vh - var(--header-height));">
                 <div id="code-container" mode="yaml" @load="this.createEditor"></div>
@@ -63,10 +62,24 @@ class ConfigEditorMonaco extends LitElement {
     }
 
     createEditor() {
-        this.editor = monaco.editor.create(this.renderRoot.getElementById('code-container'), {
-            value: this.code ? this.code : '',
-            language: 'yaml',
-            theme: 'vs-dark',
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.31.0/min/vs' }});
+        window.MonacoEnvironment = {
+            getWorkerUrl: function(workerId, label) {
+            return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                    self.MonacoEnvironment = {
+                        baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+                    };
+                    importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');`
+                )}`;
+            }
+        };
+
+        require(["vs/editor/editor.main"], function () {
+            this.editor = monaco.editor.create(this.renderRoot.getElementById('code-container'), {
+                value: this.code ? this.code : '',
+                language: 'yaml',
+                theme: 'vs-dark',
+            });
         });
     }
 
