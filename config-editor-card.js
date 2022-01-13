@@ -38,10 +38,6 @@ class ConfigEditorMonaco extends LitElement {
 
         return html`
         <ha-card>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/loader.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/editor/editor.main.nls.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/editor/editor.mai.js"></script>
-
             <div style="min-height: calc(100vh - var(--header-height));">
                 <div id="code-container" mode="yaml" @load="this.createEditor"></div>
             </div>
