@@ -1,4 +1,4 @@
-console.info("Config Editor 1.7");
+console.info("Config Editor 1.0 - monaco");
 const LitElement = window.LitElement || Object.getPrototypeOf(customElements.get("hui-masonry-view") );
 const html = LitElement.prototype.html;
 
@@ -36,9 +36,29 @@ render() {
 	
 	return html`
 	<ha-card>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/loader.min.js"></script>
+
 		<div style="min-height: calc(100vh - var(--header-height));">
-		<ha-code-editor id="code" mode="yaml" @value-changed=${this.updateText}></ha-code-editor>
+		    <div id="code-container" mode="yaml"></div>
 		</div>
+		
+		<textarea style='display: none' id='code' @change=${this.updateText}></textarea>
+		
+		<script>var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs' } }</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/loader.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/editor/editor.main.nls.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.0/min/vs/editor/editor.main.js"></script>
+		<script>
+		monaco.editor.create(document.getElementById('code-container'), {
+		  value: `function x() {
+		  console.log("Hello world!");
+		}`,
+		  language: 'javascript',
+		  theme: 'vs-dark',
+		});
+		</script>
+
+		
 		<div style="position: -webkit-sticky; position: sticky; bottom: 0; z-index:2; background: var(--app-header-background-color); color: var(--app-header-text-color, white)">
 			<div>${this.alertLine}</div>
 			<div>		
@@ -54,7 +74,8 @@ render() {
 `;
 }
 
-updateText(e) {
+
+	(e) {
 	this.code = e.detail.value;
 	if(this.openedFile){localStorage.setItem('config_editorText', this.code);}
 }
