@@ -39,10 +39,10 @@ class ConfigEditorMonaco extends LitElement {
         return html`
         <ha-card>
             <div style="min-height: calc(100vh - var(--header-height));">
-                <div id="code-container" mode="yaml" @load="this.createEditor"></div>
+                <div id="code-container" mode="yaml" @load="this.createEditor" style='calc(100vh - var(--header-height) - 50px)'></div>
             </div>
             
-            <div style="position: -webkit-sticky; position: sticky; bottom: 0; z-index:2; background: var(--app-header-background-color); color: var(--app-header-text-color, white)">
+            <div style="height:50px; position: -webkit-sticky; position: sticky; bottom: 0; z-index:2; background: var(--app-header-background-color); color: var(--app-header-text-color, white)">
                 <div>${this.alertLine}</div>
                 <div>        
                 <button @click="${this.List}">Get List</button>
