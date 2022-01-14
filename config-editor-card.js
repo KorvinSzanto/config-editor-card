@@ -37,24 +37,24 @@ class ConfigEditorMonaco extends LitElement {
         }
 
         return html`
-        <ha-card>
-            <div style="min-height: calc(100vh - var(--header-height));">
-                <div id="code-container" mode="yaml" @load="this.createEditor" style='calc(100vh - var(--header-height) - 50px)'></div>
-            </div>
-            
-            <div style="height:50px; position: -webkit-sticky; position: sticky; bottom: 0; z-index:2; background: var(--app-header-background-color); color: var(--app-header-text-color, white)">
-                <div>${this.alertLine}</div>
-                <div>        
-                <button @click="${this.List}">Get List</button>
-                <select @change=${this.Load}>
-                ${[''].concat(this.fileList).map(value => html`<option ?selected=${value === this.openedFile} value=${value}>${value}</option>`)}
-                </select>
-                <button @click="${this.Save}">Save</button>
+            <ha-card>
+                <div style="min-height: calc(100vh - var(--header-height));">
+                    <div id="code-container" mode="yaml" @load="this.createEditor" style='height:calc(100vh - var(--header-height) - 50px)'></div>
                 </div>
-                <code>#${this.infoLine}</code>
-            </div>
-        </ha-card>
-    `;
+                
+                <div style="height:50px; position: -webkit-sticky; position: sticky; bottom: 0; z-index:2; background: var(--app-header-background-color); color: var(--app-header-text-color, white)">
+                    <div>${this.alertLine}</div>
+                    <div>        
+                    <button @click="${this.List}">Get List</button>
+                    <select @change=${this.Load}>
+                    ${[''].concat(this.fileList).map(value => html`<option ?selected=${value === this.openedFile} value=${value}>${value}</option>`)}
+                    </select>
+                    <button @click="${this.Save}">Save</button>
+                    </div>
+                    <code>#${this.infoLine}</code>
+                </div>
+            </ha-card>
+        `;
     }
 
     async createEditor(promise) {
